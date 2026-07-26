@@ -12,8 +12,8 @@ function App() {
   const passwordGenerator = useCallback(() => {
     let pass = ""
     let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    if(numberAllowed) str += "0123456789"
-    if(charAllowed) str += "!@#$%^&*-_+=[]{}~`"
+    if (numberAllowed) str += "0123456789"
+    if (charAllowed) str += "!@#$%^&*-_+=[]{}~`"
 
     for (let i = 1; i <= length; i++) {
       let char = Math.floor(Math.random() * str.length + 1)
@@ -32,63 +32,92 @@ function App() {
 
   useEffect(() => {
     passwordGenerator()
-  }, [length,numberAllowed, charAllowed, passwordGenerator])
+  }, [length, numberAllowed, charAllowed, passwordGenerator])
 
   return (
     <>
-      <div className="w-full max-w-md mx-auto shadow-md rounded-lg px-4 py-3 my-8 text-orange-500 bg-gray-700">
-        <h1 className='text-white text-center my-3'>Password Generator</h1>
-        <div className='flex shadow rounded-lg overflow-hidden mb-4'>
-          <input 
-            type="text" 
-            value={password}
-            className='bg-white text-black outline-none w-full py-1 px-3'
-            placeholder='Password'
-            readOnly
-            ref={passwordRef}
+      <div className="min-h-screen flex items-center justify-center bg-black px-4">
+        <div className="w-full max-w-md rounded-xl border border-lime-500 bg-neutral-950 p-6 shadow-[0_0_40px_rgba(34,197,94,0.35)]">
+
+          {/* Heading */}
+          <h1 className="text-center text-2xl font-bold text-lime-400 tracking-widest mb-6">
+            🔐PASSWORD GENERATOR
+          </h1>
+
+          {/* Password */}
+          <div className="relative mb-6">
+            <input
+              type="text"
+              value={password}
+              readOnly
+              ref={passwordRef}
+              placeholder="Generate Password"
+              className="w-full rounded-lg border border-lime-500 bg-black px-4 py-4 text-lime-400 text-lg tracking-widest outline-none"
             />
-            <button 
+
+            <button
               onClick={copyPasswordToClipboard}
-              className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0'>
-              copy
+              className="absolute right-2 top-2 rounded-md bg-lime-500 px-4 py-2 font-semibold text-black transition hover:bg-lime-400"
+            >
+              COPY
             </button>
-        </div>
-        <div className='flex text-sm gap-x-2'>
-          <div className='flex items-center gap-x-1'>
-            <input 
+          </div>
+
+          {/* Length */}
+          <div className="mb-6">
+            <div className="flex justify-between text-lime-400 mb-2">
+              <span>Length</span>
+              <span>{length}</span>
+            </div>
+
+            <input
               type="range"
               min={6}
-              max={100}
+              max={20}
               value={length}
-              className='cursor-pointer'
-              onChange={(e) => {setLength(e.target.value)}}
+              onChange={(e) => setLength(e.target.value)}
+              className="w-full accent-lime-500 cursor-pointer"
             />
-            <label>Length: {length}</label>
           </div>
 
-          <div className="flex items-center gap-x-1">
-            <input 
-              type="checkbox"
-              defaultChecked={numberAllowed}
-              id='numberInput'
-              onChange={() => {
-                setNumberAllowed((prev) => !prev);
-              }}
-            />
-            <label htmlFor="numberInput">Numbers</label>
+          {/* Options */}
+          <div className="space-y-3">
+
+            <label className="flex items-center justify-between rounded-lg border border-lime-700 bg-neutral-900 px-4 py-3 hover:bg-neutral-800 cursor-pointer">
+
+              <span className="text-lime-300">Include Numbers</span>
+
+              <input
+                type="checkbox"
+                defaultChecked={numberAllowed}
+                onChange={() => setNumberAllowed(prev => !prev)}
+                className="h-5 w-5 accent-lime-500"
+              />
+
+            </label>
+
+            <label className="flex items-center justify-between rounded-lg border border-lime-700 bg-neutral-900 px-4 py-3 hover:bg-neutral-800 cursor-pointer">
+
+              <span className="text-lime-300">Special Characters</span>
+
+              <input
+                type="checkbox"
+                defaultChecked={charAllowed}
+                onChange={() => setCharAllowed(prev => !prev)}
+                className="h-5 w-5 accent-lime-500"
+              />
+
+            </label>
           </div>
 
-          <div className="flex items-center gap-x-1">
-            <input 
-              type="checkbox"
-              defaultChecked={charAllowed}
-              id='characterInput'
-              onChange={() => {
-                setCharAllowed((prev) => !prev);
-              }}
-            />
-            <label htmlFor="characterInput">Characters</label>
-          </div>
+          {/* Generate New Password */}
+          <button
+            onClick={passwordGenerator}
+            className="mt-6 w-full rounded-lg bg-lime-500 px-4 py-2 font-semibold text-black transition hover:bg-lime-400"
+          >
+            ⚡ Generate New Password
+          </button>
+
         </div>
       </div>
     </>
